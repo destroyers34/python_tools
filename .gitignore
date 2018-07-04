@@ -32,3 +32,15 @@ OuvrirSLDPRT/partslist\.txt
 OuvrirSLDPRT/log\.txt
 
 OuvrirPE/partslist\.txt
+
+\.settings/
+
+\.project
+
+\.pydevproject
+
+*.zip
+
+OuvrirPDF/filename\.csv
+
+pdf_list\.txt

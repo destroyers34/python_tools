@@ -5,8 +5,11 @@ import ctypes
 import Tkinter
 import tkMessageBox
 import time
+import re
 
 dt = time.strftime('%Y-%m-%d %H:%M:%S') + ': '
+
+foo = re.compile(r'[A-Z]\d{2}[-]\d{4}[_]', re.I)
 
 famillelist = { 'A01':'A01 - Adapter',
 'A02':'A02 - Axle',
@@ -144,26 +147,29 @@ with open("log.txt", "a") as f:
 		for file in files:
 			#famille = file[-3:]
 			if file[-3:].upper() == 'PDF':
-				subFolder = os.path.join(destpath, getFamille(file[:3]), file[:8])
-				#print subFolder
-				#print file
-				#print getFamille(file)
-				if not os.path.isdir(subFolder):
-					os.makedirs(subFolder)
-					f.write(str(dt + "Created folder " + file + "\n"))
-				#print os.path.join(root, file)
-				if os.path.isfile(os.path.join(subFolder, file)):
-					print file[:11] + u" existe!"
-					f.write(str(dt + file[:11] + u" existe!\n"))
-					result = tkMessageBox.askquestion("Remplacer", (file[:11] + u" existe! Voulez-vous le remplacer?"), icon='warning')
-					if result == 'yes':
-						shutil.copy(os.path.join(root, file), subFolder)
-						print file[:11] + u" remplacer"
-						f.write(str(dt + file[:11] + u" remplacer!\n"))
+				if foo.match(file):
+					subFolder = os.path.join(destpath, getFamille(file[:3]), file[:8])
+					#print subFolder
+					#print file
+					#print getFamille(file)
+					if not os.path.isdir(subFolder):
+						os.makedirs(subFolder)
+						f.write(str(dt + "Created folder " + file + "\n"))
+					#print os.path.join(root, file)
+					if os.path.isfile(os.path.join(subFolder, file)):
+						print file[:11] + u" existe!"
+						f.write(str(dt + file[:11] + u" existe!\n"))
+						result = tkMessageBox.askquestion("Remplacer", (file[:11] + u" existe! Voulez-vous le remplacer?"), icon='warning')
+						if result == 'yes':
+							shutil.copy(os.path.join(root, file), subFolder)
+							print file[:11] + u" remplacer"
+							f.write(str(dt + file[:11] + u" remplacer!\n"))
+					else:
+						shutil.move(os.path.join(root, file), subFolder)
+						print "Moved " + file
+						f.write(str(dt + "Moved " + file + "\n"))
+						continue
 				else:
-					shutil.move(os.path.join(root, file), subFolder)
-					print "Moved " + file
-					f.write(str(dt + "Moved " + file + "\n"))
 					continue
 			else:
 				continue
