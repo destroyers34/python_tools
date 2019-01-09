@@ -29,7 +29,7 @@ def getRevision(part):
 				continue
 			else:
 				continue
-		print filelist
+		print (filelist)
 		#print max(filelist)
 		log.write(str(filelist))
 		log.write('\n')
@@ -51,13 +51,13 @@ def getRevision(part):
 def getPartsList():
 	with open('partslist.txt') as f:
 		content = f.readlines()
-		print content
+		print (content)
 		foo = re.compile(r'[A-Z]\d{2}[-]\d{4}', re.I)
 		#print re.search(foo, r'2 X F01-0118_06\n')
 		#foo = re.match(r'[aA-zZ]\d{2}-\d{4}', re.escape(str(f.readlines())))
 		content = [re.findall(foo, x)[0] for x in content]
 		for x in content:
-			print x
+			print (x)
 		# you may also want to remove whitespace characters like `\n` at the end of each line
 		#content = [x.strip() for x in content]
 		return content
@@ -79,8 +79,8 @@ with open("log.txt", "w") as log:
 					#print cible
 					winshell.CreateShortcut (Path=os.path.join (currentfolder, revision+'.lnk'),Target=cible)
 				else:
-					print part + " n'existe pas!"
-					print drawing_dir + famille + "\\" + part + "\\" + revision
+					print (part + " n'existe pas!")
+					print (drawing_dir + famille + "\\" + part + "\\" + revision)
 					log.write(str("ERREUR - " + part + " n'existe pas!"))
 					log.write('\n')
 #raw_input("Appuyez sur une touche pour quitter")

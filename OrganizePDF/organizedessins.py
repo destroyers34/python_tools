@@ -120,9 +120,9 @@ def getRevision(part):
 			continue
 		else:
 			continue
-	print filelist
-	print max(filelist)
-	return max(filelist)
+	print (filelist)
+	print (max(filelist))
+	return (max(filelist))
 
 #srcpath = 'C:\Users\\abechard\\Desktop\\test'
 srcpath = os.path.dirname(os.path.abspath(__file__))
@@ -157,16 +157,16 @@ with open("log.txt", "a") as f:
 						f.write(str(dt + "Created folder " + file + "\n"))
 					#print os.path.join(root, file)
 					if os.path.isfile(os.path.join(subFolder, file)):
-						print file[:11] + u" existe!"
+						print (file[:11] + u" existe!")
 						f.write(str(dt + file[:11] + u" existe!\n"))
 						result = tkMessageBox.askquestion("Remplacer", (file[:11] + u" existe! Voulez-vous le remplacer?"), icon='warning')
 						if result == 'yes':
 							shutil.copy(os.path.join(root, file), subFolder)
-							print file[:11] + u" remplacer"
+							print (file[:11] + u" remplacer")
 							f.write(str(dt + file[:11] + u" remplacer!\n"))
 					else:
 						shutil.move(os.path.join(root, file), subFolder)
-						print "Moved " + file
+						print ("Moved " + file)
 						f.write(str(dt + "Moved " + file + "\n"))
 						continue
 				else:

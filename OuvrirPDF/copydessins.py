@@ -4,7 +4,7 @@ from shutil import copy2
 import famillelist
 
 currentfolder = os.path.dirname(os.path.abspath(__file__))
-exec (compile(source=open(currentfolder + '\\famillelist.py').read(), filename='famillelist.py', mode='exec'))
+exec (compile(source=open('famillelist.py').read(), filename='famillelist.py', mode='exec'))
 
 drawing_dir = u"S:\\---ETI---NOMENCLATURE (NM)- PLANS D\'ENSSEMBLE (PE)-PLANS DE D\u00C9FINITIONS (X...)\\PLANS DE DEFINITION (X__-XXXX)\\PDF\\"
 
@@ -20,6 +20,7 @@ def getRevision(part):
     famille = getFamille(part)
     # print getFamille(part)
     filelist = []
+    listepiece = []
     fichier = ""
     # print os.path.isdir((drawing_dir + famille + "\\" + part)).
     # print drawing_dir + famille + "\\" + part
@@ -27,22 +28,35 @@ def getRevision(part):
         for filename in os.listdir((drawing_dir + famille + "\\" + part)):
             if filename.startswith(part):
                 # print(os.path.join(directory, filename))
-                # print filename
-                filelist.append(filename)
+                #print (filename[-3:].upper())
+                if filename[-3:].upper() == 'PDF':
+                    filelist.append(filename)
                 continue
             else:
                 continue
-        print filelist
-        # print max(filelist)
-        log.write(str(filelist))
+        #print (filelist)
+        log.write('Liste des pièces trouver: ')
+        for file in filelist:
+            piece = file.replace('.','_').split('_')
+            if piece[1].startswith('T'):
+                piece.insert(2,str(int(piece[1][1:])+0.1))
+            else:
+                piece.insert(2,str(int(piece[1])*10)) 
+            listepiece.append(piece)
+            log.write('\n')
+            log.write(str(piece))
+            #print (piece)
+        #print (max(listepiece, key=lambda x: x[3]))
         log.write('\n')
-        correction = max(filelist).split('_')
-        correction = '_'.join(correction[:2]), '_'.join(correction[2:])
-        fichier = correction[0]
-        if fichier[-3:].upper() != 'PDF':
-            fichier = fichier + '.PDF'
-        # print fichier
-        log.write(str(fichier))
+        piece = max(listepiece, key=lambda x: x[2])
+        fichier = piece[0] + '_' + piece[1]
+        #correction = max(filelist).split('_')
+        #correction = '_'.join(correction[:2]), '_'.join(correction[2:])
+        #fichier = correction[0]
+        #if fichier[-3:].upper() != 'PDF':
+        #    fichier = fichier + '.PDF'
+        #print (fichier)
+        log.write('Révision la plus récente: ' + str(fichier))
         log.write('\n')
         return fichier
     else:
@@ -68,20 +82,25 @@ partslist = getPartsList()
 # print partslist
 with open("log.txt", "w") as log:
     for part in partslist:
+        log.write('--------------------------------\n')
+        log.write('Part: ' + part + '\n')
         revision = getRevision(part)
         if (revision):
             famille = getFamille(part)
             #			#currentfolder = os.path.dirname(os.path.abspath(__file__))
             if part:
                 #		os.startfile((drawing_dir + famille + "\\" + part))
-                cible = drawing_dir + famille + "\\" + part + "\\" + revision
+                cible = drawing_dir + famille + "\\" + part + "\\" + revision + '.PDF'
                 if os.path.isfile(cible):
                     copy2(cible, currentfolder)
+                    log.write('Dessin copier: ' + revision)
+                    log.write('\n')
                     # print cible
                     # winshell.CreateShortcut (Path=os.path.join (currentfolder, revision+'.lnk'),Target=cible)
-                    #				else:
-                    print part + " n'existe pas!"
-                    print drawing_dir + famille + "\\" + part + "\\" + revision
+                else:
+                    #print (part + " n'existe pas!")
+                    #print (drawing_dir + famille + "\\" + part + "\\" + revision)
                     log.write(str("ERREUR - " + part + " n'existe pas!"))
                     log.write('\n')
-                    # raw_input("Appuyez sur une touche pour quitter")
+                #input("Appuyez sur une touche pour quitter")
+        log.write('--------------------------------\n')

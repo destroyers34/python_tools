@@ -1,4 +1,4 @@
-﻿famillelist = { 
+famillelist = {
 'A01':'A01 - Adapter',
 'A02':'A02 - Axle',
 'A03':'A03 - Angle',
