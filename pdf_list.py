@@ -3,8 +3,9 @@ import os, re, shutil
 
 drawing_dir = u"S:\\---ETI---NOMENCLATURE (NM)- PLANS D\'ENSSEMBLE (PE)-PLANS DE D\u00C9FINITIONS (X...)\\PLANS DE DEFINITION (X__-XXXX)\\PDF\\"
 foo = re.compile(r'[A-Z]\d{2}[-]\d{4}[_]', re.I)
+excluded_extensions = ['db']
 
-with open("pdf_list.txt", "wb") as f:
+with open("pdf_list.txt", "w") as f:
     exclude = set(['000 - A Classer','000 - Autres PDF'])
     for root, directories, filenames in os.walk(drawing_dir, topdown=True):
         directories[:] = [d for d in directories if d not in exclude]
@@ -20,7 +21,9 @@ with open("pdf_list.txt", "wb") as f:
                     #print filename          
                     shutil.move(os.path.join(root, filename), os.path.join(drawing_dir, '000 - A Classer'))
                     print (filename + ' has been moved to 000 - A Classer')
+            elif fichier_extension[1].lower() in excluded_extensions:
+                continue
             else:
-                print (filename)
+                print (os.path.join(root, filename))
                 continue
 print('------------TERMINER----------------')
