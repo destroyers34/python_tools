@@ -1,8 +1,8 @@
 import os, csv, re
 
-dirpath = os.getcwd()
-csvpath = os.path.join(dirpath, 'filename.csv')
-f=open(csvpath,'wb+')
+dirpath = u"S:\\---ETI---NOMENCLATURE (NM)- PLANS D\'ENSSEMBLE (PE)-PLANS DE D\u00C9FINITIONS (X...)\\PLANS DE DEFINITION (X__-XXXX)\\PDF\\"
+csvpath = os.path.join(os.getcwd(), 'filename.csv')
+f=open(csvpath,'w', newline='')
 f.truncate()
 w=csv.writer(f)
 for path, dirs, files in os.walk(dirpath):
@@ -10,7 +10,7 @@ for path, dirs, files in os.walk(dirpath):
     for filename in files:
         if foo.match(filename):
             part = filename[:-4]
-            #print part + ' rev:' + rev
+            #print (part)
         #print(filename)
             w.writerow([part])
 f.close()
