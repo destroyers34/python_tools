@@ -21,6 +21,6 @@ with open("pdf_list.txt", "wb") as f:
                     shutil.move(os.path.join(root, filename), os.path.join(drawing_dir, '000 - A Classer'))
                     print (filename + ' has been moved to 000 - A Classer')
             else:
-                print filename
+                print (filename)
                 continue
 print('------------TERMINER----------------')
