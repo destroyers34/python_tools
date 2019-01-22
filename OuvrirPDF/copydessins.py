@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, winshell, re
 from shutil import copy2
-import famillelist
+#import famillelist
 
 currentfolder = os.path.dirname(os.path.abspath(__file__))
 #exec (compile(source=open('famillelist.py').read(), filename='famillelist.py', mode='exec'))
@@ -132,6 +132,7 @@ def getRevision(part):
         log.write('Liste des pièces trouver: ')
         for file in filelist:
             piece = file.replace('.','_').split('_')
+            #print (piece)
             if piece[1].startswith('T'):
                 piece.insert(2,str(int(piece[1][1:])+0.1))
             else:
@@ -190,7 +191,7 @@ with open("log.txt", "w") as log:
                     log.write('Dessin copier: ' + revision)
                     log.write('\n')
                     # print cible
-                    # winshell.CreateShortcut (Path=os.path.join (currentfolder, revision+'.lnk'),Target=cible)
+                    # winshell.CreateShortcut(Path=os.path.join (currentfolder, revision+'.lnk'),Target=cible)
                 else:
                     #print (part + " n'existe pas!")
                     #print (drawing_dir + famille + "\\" + part + "\\" + revision)

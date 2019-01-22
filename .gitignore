@@ -44,3 +44,11 @@ OuvrirPE/partslist\.txt
 OuvrirPDF/filename\.csv
 
 pdf_list\.txt
+
+\.idea/
+
+*.xlsx
+
+\venv_p_tools/
+
+send_po_excel/connection\.py
