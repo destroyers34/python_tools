@@ -1,23 +1,23 @@
 import pyodbc
 import pandas as pd
 import os
+from connection.connect_string import *
+from email_manager.quickstart import *
 
 po_number = input('Inscrire numéro de PO:')
 currentfolder = os.path.dirname(os.path.abspath(__file__))
-writer = pd.ExcelWriter("%s\T%s.xlsx" % (currentfolder, po_number))
-connect_string = exec(open(currentfolder + "\connection.py").read())
+writer = pd.ExcelWriter("%s\\T%s.xlsx" % (currentfolder, po_number))
 
 
 def main():
-    cnxn = pyodbc.connect(connect_string)
-    cursor = cnxn.cursor()
+    cursor = connect_to_erp()
     cursor.execute(('SELECT * FROM P_ORDER_DTL WHERE PO={}').format(po_number))
     column_title = ['NUMERO', 'DESCRIPTION', 'QTY']
     parts_no = []
     descriptions = []
     qantites = []
     for row in cursor:
-        print("%s, %s, %s" % (row[3], row[5], int(row[6])))
+        # print("%s, %s, %s" % (row[3], row[5], int(row[6])))
         parts_no.append(row[3])
         descriptions.append(row[5])
         qantites.append(row[6])
@@ -26,6 +26,25 @@ def main():
     print(df)
     df.to_excel(writer, sheet_name='sheet11', index=False)
     writer.save()
+    email_po()
+
+
+def connect_to_erp():
+    cnxn = pyodbc.connect(connect_string())
+    return cnxn.cursor()
+
+
+def email_po():
+    service = create_service()
+    results = service.users().labels().list(userId='me').execute()
+    labels = results.get('labels', [])
+
+    if not labels:
+        print('No labels found.')
+    else:
+        print('Labels:')
+        for label in labels:
+            print(label['name'])
 
 
 if __name__ == '__main__':

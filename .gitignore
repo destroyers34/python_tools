@@ -52,3 +52,9 @@ pdf_list\.txt
 \venv_p_tools/
 
 send_po_excel/connection\.py
+
+send_po_excel/credentials\.json
+
+send_po_excel/token\.pickle
+
+send_po_excel/connection/connect_string\.py
