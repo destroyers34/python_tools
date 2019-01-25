@@ -4,14 +4,20 @@ import os
 from connection.connect_string import *
 from email_manager.quickstart import *
 
-po_number = input('Inscrire numéro de PO:')
-currentfolder = os.path.dirname(os.path.abspath(__file__))
-writer = pd.ExcelWriter("%s\\T%s.xlsx" % (currentfolder, po_number))
-
 
 def main():
+    po_number = input('Inscrire numéro de PO:')
+    current_folder = os.path.dirname(os.path.abspath(__file__))
+    save_path = "%s\\T%s.xlsx" % (current_folder, po_number)
     cursor = connect_to_erp()
-    cursor.execute(('SELECT * FROM P_ORDER_DTL WHERE PO={}').format(po_number))
+    df = get_parts_po(cursor, po_number)
+    print(df)
+    save_to_excel(df, save_path)
+    # email_po()
+
+
+def get_parts_po(cursor, po_number):
+    cursor.execute('SELECT * FROM P_ORDER_DTL WHERE PO={}'.format(po_number))
     column_title = ['NUMERO', 'DESCRIPTION', 'QTY']
     parts_no = []
     descriptions = []
@@ -22,11 +28,13 @@ def main():
         descriptions.append(row[5])
         qantites.append(row[6])
         # print('\n')
-    df = pd.DataFrame({column_title[0]: parts_no, column_title[1]: descriptions, column_title[2]: qantites})
-    print(df)
+    return pd.DataFrame({column_title[0]: parts_no, column_title[1]: descriptions, column_title[2]: qantites})
+
+
+def save_to_excel(df, save_path):
+    writer = pd.ExcelWriter(save_path)
     df.to_excel(writer, sheet_name='sheet11', index=False)
     writer.save()
-    email_po()
 
 
 def connect_to_erp():

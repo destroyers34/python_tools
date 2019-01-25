@@ -166,10 +166,13 @@ def getPartsList():
         # print content
         # raw_input()
         foo = re.compile(r'[A-Z]\d{2}[-]\d{4}', re.I)
-        content = [re.findall(foo, x)[0] for x in content]
-        # for x in content:
-        # print x
-        # raw_input()
+        try:
+            content = [re.findall(foo, x)[0] for x in content if x!="\n"]
+        except IndexError:
+            pass
+        #for x in content:
+            #print (x)
+        #input()
         return content
 
 
