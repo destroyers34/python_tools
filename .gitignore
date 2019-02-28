@@ -58,3 +58,9 @@ send_po_excel/credentials\.json
 send_po_excel/token\.pickle
 
 send_po_excel/connection/connect_string\.py
+
+work_order/connection/
+
+find_project_no/connection/
+
+*.lnk

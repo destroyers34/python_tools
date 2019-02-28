@@ -13,7 +13,7 @@ def main():
     df = get_parts_po(cursor, po_number)
     print(df)
     save_to_excel(df, save_path)
-    # email_po()
+    email_po(po_number, "%s\\T%s.xlsx" % (current_folder, po_number))
 
 
 def get_parts_po(cursor, po_number):
@@ -42,17 +42,23 @@ def connect_to_erp():
     return cnxn.cursor()
 
 
-def email_po():
+def email_po(po_number, file):
     service = create_service()
-    results = service.users().labels().list(userId='me').execute()
-    labels = results.get('labels', [])
+    # results = service.users().labels().list(userId='me').execute()
+    # labels = results.get('labels', [])
 
-    if not labels:
-        print('No labels found.')
-    else:
-        print('Labels:')
-        for label in labels:
-            print(label['name'])
+    # if not labels:
+    #    print('No labels found.')
+    # else:
+    #    print('Labels:')
+    #    for label in labels:
+    #        print(label['name'])
+    message = create_message_with_attachment('abechard@centreidnov.com',
+                                             'abechard@centreidnov.com',
+                                             "Commande PO#%s" % po_number,
+                                             "Bonjour\nVoici des pièces à produire",
+                                             file)
+    #send_message(service, 'me', message)
 
 
 if __name__ == '__main__':

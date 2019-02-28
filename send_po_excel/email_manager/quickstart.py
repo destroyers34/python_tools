@@ -19,9 +19,18 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from googleapiclient import errors
+from email.mime.audio import MIMEAudio
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import email.encoders
+import base64
+import mimetypes
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 
 def main():
@@ -80,7 +89,9 @@ def create_message(sender, to, subject, message_text):
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
-    return {'raw': base64.urlsafe_b64encode(message.as_string())}
+    b64_bytes = base64.urlsafe_b64encode(message.as_bytes())
+    b64_string = b64_bytes.decode()
+    return {'raw': b64_string}
 
 
 def create_message_with_attachment(
@@ -129,9 +140,11 @@ def create_message_with_attachment(
         fp.close()
     filename = os.path.basename(file)
     msg.add_header('Content-Disposition', 'attachment', filename=filename)
+    email.encoders.encode_base64(msg)
     message.attach(msg)
-
-    return {'raw': base64.urlsafe_b64encode(message.as_string())}
+    b64_bytes = base64.urlsafe_b64encode(message.as_bytes())
+    b64_string = b64_bytes.decode()
+    return {'raw': b64_string}
 
 
 def send_message(service, user_id, message):
