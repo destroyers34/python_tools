@@ -64,3 +64,4 @@ work_order/connection/
 findprojectnumber/connection/
 
 *.lnk
+/venv/
