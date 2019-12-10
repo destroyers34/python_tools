@@ -5,11 +5,11 @@
 
 OuvrirPE/\.idea/
 
-OuvrirPDF/\.idea/
+ouvrirpdf/\.idea/
 
 OrganizeDXF/log\.txt
 
-OrganizePDF/log\.txt
+organizedessins/log\.txt
 
 *.pyc
 
@@ -17,9 +17,9 @@ OuvrirDXF/log\.txt
 
 OuvrirDXF/partslist\.txt
 
-OuvrirPDF/log\.txt
+ouvrirpdf/log\.txt
 
-OuvrirPDF/partslist\.txt
+ouvrirpdf/partslist\.txt
 
 OuvrirPE/log\.txt
 
@@ -41,7 +41,7 @@ OuvrirPE/partslist\.txt
 
 *.zip
 
-OuvrirPDF/filename\.csv
+ouvrirpdf/filename\.csv
 
 pdf_list\.txt
 
@@ -61,6 +61,6 @@ send_po_excel/connection/connect_string\.py
 
 work_order/connection/
 
-find_project_no/connection/
+findprojectnumber/connection/
 
 *.lnk

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from shutil import copy2
-import famillelist
+from variables import famillelist
 
 currentfolder = os.path.dirname(os.path.abspath(__file__))
 exec(compile(source=open(currentfolder + '\\famillelist.py').read(), filename='famillelist.py', mode='exec'))

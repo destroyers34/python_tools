@@ -1,5 +1,5 @@
 PyPDF2==1.26.0
-pywin32==223
+pywin32
 winshell==0.6
 google-api-python-client
 google-auth-httplib2
