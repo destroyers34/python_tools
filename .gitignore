@@ -65,3 +65,4 @@ findprojectnumber/connection/
 
 *.lnk
 /venv/
+/ouvrirpdf/partlist.txt
