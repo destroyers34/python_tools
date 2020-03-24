@@ -3,9 +3,11 @@ import os
 from shutil import copy2
 
 
-drawing_dir = u"C:\\Dessins\\PE\\"
+drawing_dir = u"I:\\4-CONCEPTION\\4300-PIECES\\PE\\PDF\\"  # Doit se terminer par \\
+currentfolder = os.path.dirname(os.path.abspath(__file__))
+
 srcpath = drawing_dir
-destpath = u"C:\\Dessins\\AnnyCNX1.1"
+destpath = currentfolder
 
 
 def get_revision(part):

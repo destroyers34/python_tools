@@ -5,12 +5,14 @@ import winshell
 import sys
 from shutil import copy2
 
-sys.path.insert(0, "C:\\Users\\antho\\PycharmProjects\\python_tools")
+sys.path.insert(0, "C:\\Users\\abechard\\PycharmProjects\\python_tools")
 from variables.famillelist import familles
 
 currentfolder = os.path.dirname(os.path.abspath(__file__))
-drawing_dir = "C:\\Dessins\\Pieces\\"
-
+step_dir = "I:\\4-CONCEPTION\\4300-PIECES\\DEFINITION\\PARTS\\"  # Doit toujours se terminer par \\
+pdf_dir = "I:\\4-CONCEPTION\\4300-PIECES\\DEFINITION\\PDF\\"  # Doit toujours se terminer par \\
+drawing_dir = "I:\\4-CONCEPTION\\4300-PIECES\\DEFINITION\\PDF\\"  # Doit toujours se terminer par \\
+file_format = '.PDF'
 
 def get_famille(texte):
     try:
@@ -18,25 +20,28 @@ def get_famille(texte):
     except:
         log.write(texte[:3] + " - famille de pièce inconnu")
         log.write('\n')
-        return False
+        return ''
 
 
 def get_revision(part):
     famille = get_famille(part)
-    # print (get_famille(part))
+    #print (get_famille(part))
     filelist = []
     listepiece = []
     fichier = ""
-    # print(os.path.isdir((drawing_dir + famille + "\\" + part)))
-    # print(drawing_dir + famille + "\\" + part)
+    if choix_format == '2':
+        path = famille + "\\" + part
+    else:
+        path = ''
+    #print(drawing_dir + path)
     if famille:
-        if os.path.isdir((drawing_dir + famille + "\\" + part)):
-            for filename in os.listdir((drawing_dir + famille + "\\" + part)):
+        if os.path.isdir((drawing_dir + path)):
+            for filename in os.listdir((drawing_dir + path)):
                 base, extension = os.path.splitext(filename)
                 # print(filename)
                 # print(filename.startswith(part))
-                # print(extension.upper() == '.PDF')
-                if filename.startswith(part) and extension.upper() == '.PDF':
+                # print(extension.upper() == file_format)
+                if filename.startswith(part) and extension.upper() == file_format:
                     # print(os.path.join(directory, filename))
                     # print (filename[-3:].upper())
                     filelist.append(filename)
@@ -46,7 +51,7 @@ def get_revision(part):
             log.write('Liste des pièces trouver: ')
             for file in filelist:
                 piece = file.replace('.', '_').split('_')
-                print(piece)
+                #print(piece)
                 if piece[1][-1:] == "W":
                     piece[1] = piece[1][:-1]
                 if piece[1].startswith('T'):
@@ -74,7 +79,7 @@ def get_revision(part):
                 log.write('Aucun dessin trouver pour:' + str(fichier))
             return fichier
         else:
-            log.write(str("ERREUR - DOSSIER INEXSISTANT: " + (famille + "\\" + part)))
+            log.write(str("ERREUR - DOSSIER INEXSISTANT: " + path))
             log.write('\n')
             return False
     else:
@@ -93,6 +98,20 @@ def get_parts_list():
 partslist = get_parts_list()
 #print(partslist)
 with open("log.txt", "w") as log:
+    choix_format = input('Choisir le format: [1].STEP, [2].PDF, [3].SLDPRT\n').upper()
+    #choix_format = ''
+    if choix_format == '1':
+        file_format = '.STEP'
+        drawing_dir = step_dir
+    elif choix_format == '2':
+        file_format = '.PDF'
+        drawing_dir = pdf_dir
+    elif choix_format == '3':
+        file_format = '.SLDPRT'
+        drawing_dir = step_dir
+    else:
+        file_format = '.PDF'
+        drawing_dir = pdf_dir
     choix = input('Choisir le mode: [C]opier, [R]accourci, [CR]Combine les deux \n').upper()
     for part in partslist:
         log.write('--------------------------------\n')
@@ -103,7 +122,12 @@ with open("log.txt", "w") as log:
             #			#currentfolder = os.path.dirname(os.path.abspath(__file__))
             if part:
                 #		os.startfile((drawing_dir + famille + "\\" + part))
-                cible = drawing_dir + famille + "\\" + part + "\\" + revision + '.PDF'
+                if choix_format == '2':
+                    cible = drawing_dir + famille + "\\" + part + "\\" + revision + file_format
+                    #print(cible)
+                else:
+                    cible = drawing_dir + revision + file_format
+                    #print(cible)
                 if os.path.isfile(cible):
                     if choix == 'C':
                         copy2(cible, currentfolder)
